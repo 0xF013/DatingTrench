@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="datingtrench:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="datingtrench.war">
+      <element id="artifact" artifact-name="datingtrench:war exploded" />
+    </root>
+  </artifact>
+</component>
