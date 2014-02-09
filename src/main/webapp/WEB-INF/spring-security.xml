@@ -8,7 +8,19 @@
 
     <http auto-config='true'>
         <intercept-url pattern="/" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <intercept-url pattern="/*" access="ROLE_USER"/>
+        <intercept-url pattern="/assets/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/**" access="ROLE_USER"/>
+        <form-login
+                login-page="/"
+                authentication-failure-url="/?invalid_login=true"
+                default-target-url="/users"
+                />
+
+        <logout
+                invalidate-session="true"
+                logout-success-url="/?logged_out=true"
+                logout-url="/logout"
+                />
     </http>
 
     <authentication-manager>
