@@ -1,5 +1,6 @@
 package com.datingtrench.mvc.controllers;
 
+import com.datingtrench.mvc.models.views.forms.FrontpageRegistrationForm;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,10 +24,13 @@ public class IndexController {
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             return "redirect:/users";
         }
+
         if (null == isLoginInvalid) {
             isLoginInvalid = false;
         }
+
         model.addAttribute("isLoginInvalid", isLoginInvalid);
+        model.addAttribute("registrationForm", new FrontpageRegistrationForm());
         return "index";
 
     }

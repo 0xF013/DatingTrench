@@ -1,7 +1,7 @@
-package com.datingtrench.mvc.entities.auth;
+package com.datingtrench.mvc.models.entities.auth;
 
 import com.datingtrench.mvc.base.AbstractEntity;
-import com.datingtrench.mvc.entities.User;
+import com.datingtrench.mvc.models.entities.User;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;

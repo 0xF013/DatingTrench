@@ -5,7 +5,7 @@ package com.datingtrench.mvc.repositories;
  */
 
 import com.datingtrench.mvc.base.AbstractRepository;
-import com.datingtrench.mvc.entities.User;
+import com.datingtrench.mvc.models.entities.User;
 
 public interface UserRepository extends AbstractRepository<User> {
     User findOneByName(String name);

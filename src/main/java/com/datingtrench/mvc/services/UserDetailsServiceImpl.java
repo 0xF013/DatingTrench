@@ -1,8 +1,8 @@
 package com.datingtrench.mvc.services;
 
-import com.datingtrench.mvc.entities.User;
-import com.datingtrench.mvc.entities.auth.AuthenticationAccount;
-import com.datingtrench.mvc.entities.auth.Role;
+import com.datingtrench.mvc.models.entities.User;
+import com.datingtrench.mvc.models.entities.auth.AuthenticationAccount;
+import com.datingtrench.mvc.models.entities.auth.Role;
 import com.datingtrench.mvc.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional(readOnly = true)
     private org.springframework.security.core.userdetails.User buildUserFromUserEntity(AuthenticationAccount authenticationAccount) {
-        com.datingtrench.mvc.entities.User userEntity = authenticationAccount.getUser();
+        com.datingtrench.mvc.models.entities.User userEntity = authenticationAccount.getUser();
         String username = userEntity.getEmail();
         String password = authenticationAccount.getPassword();
         boolean enabled = authenticationAccount.getIsActive();
@@ -50,9 +50,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
-        org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(username, password, enabled,
+        return new org.springframework.security.core.userdetails.User(username, password, enabled,
                 accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        return user;
     }
 
 }

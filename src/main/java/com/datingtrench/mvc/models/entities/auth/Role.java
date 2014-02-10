@@ -1,4 +1,4 @@
-package com.datingtrench.mvc.entities.auth;
+package com.datingtrench.mvc.models.entities.auth;
 
 import com.datingtrench.mvc.base.AbstractEntity;
 

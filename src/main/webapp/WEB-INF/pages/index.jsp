@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: elvis
@@ -67,7 +68,18 @@
                 feed here
             </div>
             <div class="col-md-4">
-                reg form here
+                <form:form method="post" action="/begin_registration" modelAttribute="registrationForm">
+                    <div>
+                        <form:label path="name">
+                            <spring:message code="registration_form.labels.name"/>:
+                            <form:input path="name"/>
+                            <form:errors path="name"/>
+                        </form:label>
+                    </div>
+                    <div>
+                        <input type="submit" value="<spring:message code="registration_form.labels.submit" />"/>
+                    </div>
+                </form:form>
             </div>
         </div>
     </div>

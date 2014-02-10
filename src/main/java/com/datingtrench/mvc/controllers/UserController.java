@@ -1,6 +1,6 @@
 package com.datingtrench.mvc.controllers;
 
-import com.datingtrench.mvc.entities.User;
+import com.datingtrench.mvc.models.entities.User;
 import com.datingtrench.mvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
