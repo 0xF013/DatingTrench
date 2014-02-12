@@ -1,14 +1,17 @@
 package com.datingtrench.mvc.services;
 
+import com.datingtrench.mvc.base.AbstractEntity;
 import com.datingtrench.mvc.base.AbstractService;
+import com.datingtrench.mvc.exceptions.ValidationException;
+import com.datingtrench.mvc.mediators.RegistrationFormToUserMediator;
 import com.datingtrench.mvc.models.entities.User;
 import com.datingtrench.mvc.models.entities.auth.AuthenticationAccount;
-import com.datingtrench.mvc.models.validators.UserValidator;
 import com.datingtrench.mvc.models.views.forms.FrontpageRegistrationForm;
 import com.datingtrench.mvc.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindException;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 
 import java.util.List;
 
@@ -22,29 +25,52 @@ public class UserService extends AbstractService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RegistrationFormToUserMediator mediator;
+
+
+    @Autowired
+    private SpringValidatorAdapter validator;
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public User beginRegistration(FrontpageRegistrationForm form) {
+    @Transactional
+    public User beginRegistration(FrontpageRegistrationForm form) throws ValidationException {
         User user = new User();
-        user.setName(form.getName());
-        user.setDob(form.getDob());
-        user.setEmail(form.getEmail());
-        UserValidator userValidator = new UserValidator();
-        BindException error = new BindException(user, "user");
-        userValidator.validate(user, error);
-        if (error.hasErrors()) {
-            // throw validation exception here with errors as a field
-        } else {
-            // save
-            // is unique fail, add field error to error and throw an exception again
-        }
+
         AuthenticationAccount authenticationAccount = new AuthenticationAccount();
         authenticationAccount.setPassword(form.getPassword());
         authenticationAccount.setIsActive(true);
         user.setAuthenticationAccount(authenticationAccount);
+
+        mediator.setForm(form);
+        mediator.setUser(user);
+        mediator.bind();
+
+        ValidationException validationException = validate(user);
+        try {
+            userRepository.saveAndFlush(user);
+        } catch (RuntimeException e) {
+
+            validationException.rejectValue("email", "not_unique");
+            // is unique fail, add field validationException to validationException and throw an exception again
+            throw e;
+        }
         return user;
+    }
+
+
+    private ValidationException validate(AbstractEntity e) throws ValidationException {
+        ValidationException validationException = new ValidationException(e, e.getClass().getSimpleName());
+        validator.validate(e, validationException);
+        if (validationException.hasErrors()) {
+            throw validationException;
+        }
+
+        return validationException;
+
     }
 
 

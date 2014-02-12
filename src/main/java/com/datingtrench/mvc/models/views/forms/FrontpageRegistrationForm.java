@@ -2,13 +2,10 @@ package com.datingtrench.mvc.models.views.forms;
 
 import com.datingtrench.mvc.base.AbstractForm;
 import com.datingtrench.mvc.models.enums.Gender;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,23 +13,18 @@ import java.util.Date;
  */
 public class FrontpageRegistrationForm extends AbstractForm {
 
-    @NotNull
     private Gender gender;
 
-    @NotEmpty
-    @Size(min = 2, max = 30)
-    private String name = "Ion";
+    private String name;
 
-    @NotEmpty
-    @Email
     private String email;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    @NotNull
-    @Past
-    private Date dob;
+    private int day;
+    private int month;
+    private int year;
 
-    @NotEmpty
+
+    @NotNull
     @Size(min = 6)
     private String password;
 
@@ -60,13 +52,6 @@ public class FrontpageRegistrationForm extends AbstractForm {
         this.email = email;
     }
 
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
 
     public String getPassword() {
         return password;
@@ -75,4 +60,36 @@ public class FrontpageRegistrationForm extends AbstractForm {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public Date getDob() {
+        Calendar c = Calendar.getInstance();
+        c.set(year, month - 1, day);
+        return c.getTime();
+    }
+
+
 }
