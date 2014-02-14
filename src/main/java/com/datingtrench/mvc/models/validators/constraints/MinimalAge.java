@@ -1,4 +1,4 @@
-package com.datingtrench.mvc.models.validators.annotations;
+package com.datingtrench.mvc.models.validators.constraints;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 public @interface MinimalAge {
     int value();
 
-    String message() default "validators.MinimalAge.message";
+    String message() default "{com.datingtrench.mvc.models.validators.constraints.MinimalAge.message}";
 
     Class<?>[] groups() default {};
 

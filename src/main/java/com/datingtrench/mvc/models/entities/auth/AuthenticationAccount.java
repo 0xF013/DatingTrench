@@ -2,11 +2,14 @@ package com.datingtrench.mvc.models.entities.auth;
 
 import com.datingtrench.mvc.base.AbstractEntity;
 import com.datingtrench.mvc.models.entities.User;
+import org.apache.commons.lang.RandomStringUtils;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -16,8 +19,14 @@ import java.util.List;
 @Entity
 public class AuthenticationAccount extends AbstractEntity {
 
+
+    @NotNull
+    @Size(min = 6)
     @Basic
     private String password;
+
+    @Basic
+    private String activationCode;
 
     @Basic
     private Boolean isActive;
@@ -58,5 +67,17 @@ public class AuthenticationAccount extends AbstractEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void generateActivationCode() {
+        activationCode = RandomStringUtils.randomAlphabetic(16);
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 }

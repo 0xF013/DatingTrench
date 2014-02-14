@@ -11,6 +11,7 @@
     <mvc:annotation-driven/>
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
+
     <mvc:resources mapping="/assets/**" location="/assets/*" cache-period="31556926"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -20,6 +21,16 @@
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="messages/messages"></property>
+        <property name="basenames">
+            <list>
+                <value>
+                    messages
+                </value>
+                <value>
+                    validationMessages
+                </value>
+            </list>
+        </property>
         <property name="defaultEncoding" value="UTF-8"/>
         <property name="fallbackToSystemLocale" value="false"/>
     </bean>
@@ -29,6 +40,12 @@
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="defaultPersistenceUnit"/>
+        <property name="jpaPropertyMap">
+            <map>
+                <entry key="javax.persistence.validation.factory" value-ref="validator"/>
+                <entry key="hibernate.hbm2ddl.auto" value="create-drop"/>
+            </map>
+        </property>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">

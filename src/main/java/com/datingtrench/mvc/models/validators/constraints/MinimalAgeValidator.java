@@ -1,4 +1,4 @@
-package com.datingtrench.mvc.models.validators.annotations;
+package com.datingtrench.mvc.models.validators.constraints;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -11,6 +11,7 @@ import java.util.Date;
 public class MinimalAgeValidator implements ConstraintValidator<MinimalAge, Date> {
 
     private int validAge;
+
 
     @Override
     public void initialize(MinimalAge annotation) {

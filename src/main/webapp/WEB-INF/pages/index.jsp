@@ -55,8 +55,8 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        <c:if test="${isLoginInvalid}">
-            <div class="row">
+        <c:if test="${invalidCredentials}">
+        <div class="row">
                 <p class="bg-danger">
                     <spring:message code="index.invalidLogin"/>
                 </p>
@@ -74,6 +74,7 @@
                             <spring:message code="registrationForm.labels.gender"/>:
                         </form:label>
                         <form:radiobuttons path="gender"/>
+                        <form:errors path="gender"/>
                     </div>
                     <div class="form-group">
                         <form:label path="name">

@@ -3,8 +3,6 @@ package com.datingtrench.mvc.models.views.forms;
 import com.datingtrench.mvc.base.AbstractForm;
 import com.datingtrench.mvc.models.enums.Gender;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -24,8 +22,6 @@ public class FrontpageRegistrationForm extends AbstractForm {
     private int year;
 
 
-    @NotNull
-    @Size(min = 6)
     private String password;
 
     public Gender getGender() {

@@ -2,7 +2,9 @@ package com.datingtrench.mvc.models.entities;
 
 import com.datingtrench.mvc.base.AbstractEntity;
 import com.datingtrench.mvc.models.entities.auth.AuthenticationAccount;
-import com.datingtrench.mvc.models.validators.annotations.MinimalAge;
+import com.datingtrench.mvc.models.enums.Gender;
+import com.datingtrench.mvc.models.validators.constraints.MinimalAge;
+import com.datingtrench.mvc.models.validators.constraints.Unique;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -17,19 +19,23 @@ import java.util.Date;
  * Created by elvis on 2/6/14.
  */
 
-@Entity
+@Entity(name = "Users")
 public class User extends AbstractEntity {
 
+
+    @NotNull
+    @Enumerated
+    private Gender gender;
 
     @NotNull
     @Size(min = 3, max = 20)
     @Basic
     private String name;
 
-
     @NotNull
     @NotEmpty
     @Email
+    @Unique(tableName = "Users", property = "email")
     @Column(unique = true)
     private String email;
 
@@ -41,9 +47,25 @@ public class User extends AbstractEntity {
     private Date dob;
 
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registrationDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastActionDate;
+
+
     @Valid
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private AuthenticationAccount authenticationAccount;
+
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
 
     public String getName() {
@@ -59,6 +81,9 @@ public class User extends AbstractEntity {
     }
 
     public void setEmail(String email) {
+        if (null != email) {
+            email = email.toLowerCase();
+        }
         this.email = email;
     }
 
@@ -76,5 +101,21 @@ public class User extends AbstractEntity {
 
     public void setDob(Date dob) {
         this.dob = dob;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public Date getLastActionDate() {
+        return lastActionDate;
+    }
+
+    public void setLastActionDate(Date lastActionDate) {
+        this.lastActionDate = lastActionDate;
     }
 }

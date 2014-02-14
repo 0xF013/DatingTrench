@@ -1,12 +1,12 @@
 package com.datingtrench.mvc.controllers;
 
 import com.datingtrench.mvc.exceptions.ValidationException;
+import com.datingtrench.mvc.models.entities.User;
 import com.datingtrench.mvc.models.views.forms.FrontpageRegistrationForm;
+import com.datingtrench.mvc.services.AuthenticationService;
 import com.datingtrench.mvc.services.UserService;
+import com.datingtrench.mvc.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,33 +30,30 @@ public class IndexController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
+    private TimeUtils timeUtils;
+
     @ModelAttribute("years")
     public List<Integer> years() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        List<Integer> years = new ArrayList<Integer>();
-        int currentYear = calendar.get(Calendar.YEAR);
-        System.out.println("asdasdasdasdasd");
-        System.out.println(currentYear);
-        for (int i = currentYear; i > 1900; i--) {
-            years.add(i);
-        }
-        return years;
+        return timeUtils.years();
     }
 
     @RequestMapping("/")
-    public String index(ModelMap model, @RequestParam(value = "invalid_login", required = false) Boolean isLoginInvalid) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public String index(ModelMap model, @RequestParam(value = "invalid_login", required = false) Boolean invalidCredentials) {
 
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
+        if (!authenticationService.isAnonymous()) {
+            model.clear();
             return "redirect:/users";
         }
 
-        if (null == isLoginInvalid) {
-            isLoginInvalid = false;
+        if (null == invalidCredentials) {
+            invalidCredentials = false;
         }
 
-        model.addAttribute("isLoginInvalid", isLoginInvalid);
+        model.addAttribute("invalidCredentials", invalidCredentials);
         model.put("registrationForm", new FrontpageRegistrationForm());
         return "index";
     }
@@ -80,11 +74,22 @@ public class IndexController {
             }
         }
         if (result.hasErrors()) {
-            //.addAttribute("registrationForm", frontpageRegistrationForm);
+            System.out.println(result.getAllErrors());
             return "index";
         } else {
-            return "redirect:/2=2";
+            model.asMap().clear();
+            return "redirect:/?2=2";
         }
+    }
+
+    @RequestMapping(value = "/registration/activate", method = RequestMethod.GET)
+    public String activate(ModelMap model, @RequestParam(value = "activationCode", required = true) String activationCode) {
+        User user = userService.tryActivate(activationCode);
+        if (null == user) {
+            return "invalidCode";
+        }
+        authenticationService.forceLogin(user);
+        return "redirect:/";
     }
 
 }
