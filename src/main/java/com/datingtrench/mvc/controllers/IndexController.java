@@ -1,17 +1,16 @@
 package com.datingtrench.mvc.controllers;
 
 import com.datingtrench.mvc.exceptions.ValidationException;
-import com.datingtrench.mvc.models.entities.User;
 import com.datingtrench.mvc.models.views.forms.FrontpageRegistrationForm;
 import com.datingtrench.mvc.services.AuthenticationService;
 import com.datingtrench.mvc.services.UserService;
+import com.datingtrench.mvc.utils.ErrorsMediator;
 import com.datingtrench.mvc.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,14 +26,18 @@ import java.util.List;
 @Controller
 public class IndexController {
 
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private AuthenticationService authenticationService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private TimeUtils timeUtils;
+
+    @Autowired
+    private ErrorsMediator errorsMediator;
 
     @ModelAttribute("years")
     public List<Integer> years() {
@@ -55,7 +58,7 @@ public class IndexController {
 
         model.addAttribute("invalidCredentials", invalidCredentials);
         model.put("registrationForm", new FrontpageRegistrationForm());
-        return "index";
+        return "/public/index";
     }
 
     @RequestMapping(value = "/registration/plain", method = RequestMethod.POST)
@@ -68,28 +71,16 @@ public class IndexController {
         try {
             userService.beginRegistration(frontpageRegistrationForm);
         } catch (ValidationException e) {
-            for (ObjectError error : e.getAllErrors()) {
-                result.addError(error);
-                System.out.println(error);
-            }
+            errorsMediator.merge(result, e);
         }
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
-            return "index";
+            return "/public/index";
         } else {
             model.asMap().clear();
-            return "redirect:/?2=2";
+            return "redirect:/";
         }
     }
 
-    @RequestMapping(value = "/registration/activate", method = RequestMethod.GET)
-    public String activate(ModelMap model, @RequestParam(value = "activationCode", required = true) String activationCode) {
-        User user = userService.tryActivate(activationCode);
-        if (null == user) {
-            return "invalidCode";
-        }
-        authenticationService.forceLogin(user);
-        return "redirect:/";
-    }
 
 }

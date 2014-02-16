@@ -13,4 +13,11 @@ public interface UserRepository extends AbstractRepository<User> {
 
     @Query("select u from Users u join u.authenticationAccount a where a.activationCode =?1")
     User findUserByActivationCode(String activationCode);
+
+    @Query("select u from Users u join u.authenticationAccount a where a.isActive = false and lower(u.email)=lower(?1)")
+    User findInactiveUserByEmail(String email);
+
+    @Query("select u from Users u join u.authenticationAccount a where a.isActive = true and lower(u.email)=lower(?1)")
+    User findActiveUserByEmail(String email);
+
 }

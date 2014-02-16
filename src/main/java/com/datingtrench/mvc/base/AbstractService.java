@@ -12,9 +12,9 @@ abstract public class AbstractService {
     @Autowired
     private SpringValidatorAdapter validator;
 
-    protected ValidationException validate(AbstractEntity e) throws ValidationException {
-        ValidationException validationException = new ValidationException(e, e.getClass().getSimpleName());
-        validator.validate(e, validationException);
+    protected ValidationException validate(AbstractEntity entity) throws ValidationException {
+        ValidationException validationException = new ValidationException(entity, entity.getClass().getSimpleName());
+        validator.validate(entity, validationException);
         if (validationException.hasErrors()) {
             throw validationException;
         }

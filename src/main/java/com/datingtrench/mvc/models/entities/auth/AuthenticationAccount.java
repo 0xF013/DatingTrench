@@ -2,7 +2,6 @@ package com.datingtrench.mvc.models.entities.auth;
 
 import com.datingtrench.mvc.base.AbstractEntity;
 import com.datingtrench.mvc.models.entities.User;
-import org.apache.commons.lang.RandomStringUtils;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -67,10 +66,6 @@ public class AuthenticationAccount extends AbstractEntity {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public void generateActivationCode() {
-        activationCode = RandomStringUtils.randomAlphabetic(16);
     }
 
     public String getActivationCode() {

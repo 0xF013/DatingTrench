@@ -1,8 +1,10 @@
-package com.datingtrench.mvc.builders;
+package com.datingtrench.mvc.models.builders;
 
 import com.datingtrench.mvc.models.entities.User;
 import com.datingtrench.mvc.models.entities.auth.AuthenticationAccount;
 import com.datingtrench.mvc.models.views.forms.FrontpageRegistrationForm;
+import com.datingtrench.mvc.utils.RandomStringGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -14,6 +16,10 @@ import java.util.Date;
 @Component
 public class UserBuilder {
 
+    public static final int ACTIVATION_CODE_LENGTH = 16;
+
+    @Autowired
+    RandomStringGenerator randomStringGenerator;
 
     public User buildFrom(FrontpageRegistrationForm form) {
 
@@ -29,7 +35,7 @@ public class UserBuilder {
         AuthenticationAccount authenticationAccount = new AuthenticationAccount();
         authenticationAccount.setPassword(form.getPassword());
         authenticationAccount.setIsActive(false);
-        authenticationAccount.generateActivationCode();
+        authenticationAccount.setActivationCode(randomStringGenerator.generate(ACTIVATION_CODE_LENGTH));
         authenticationAccount.setUser(user);
         user.setAuthenticationAccount(authenticationAccount);
 
