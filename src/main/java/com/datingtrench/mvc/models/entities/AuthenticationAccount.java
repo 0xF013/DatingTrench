@@ -1,15 +1,12 @@
-package com.datingtrench.mvc.models.entities.auth;
+package com.datingtrench.mvc.models.entities;
 
 import com.datingtrench.mvc.base.AbstractEntity;
-import com.datingtrench.mvc.models.entities.User;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 /**
  * Created by elvis on 2/9/14.
@@ -32,17 +29,6 @@ public class AuthenticationAccount extends AbstractEntity {
 
     @OneToOne
     private User user;
-
-    @ManyToMany
-    private List<Role> roles;
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 
     public String getPassword() {
         return password;

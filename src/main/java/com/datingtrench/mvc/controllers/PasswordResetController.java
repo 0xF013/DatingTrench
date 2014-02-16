@@ -23,7 +23,7 @@ public class PasswordResetController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/password_reset/reset")
+    @RequestMapping(value = "/public/password_reset/reset")
     public String resetPassword(ModelMap model, @RequestParam(value = "emailNotFound", required = false) Boolean emailNotFound) {
         if (null == emailNotFound) {
             emailNotFound = false;
@@ -33,17 +33,17 @@ public class PasswordResetController {
         return "/public/passwordReset/reset";
     }
 
-    @RequestMapping(value = "/password_reset/reset", method = RequestMethod.POST)
+    @RequestMapping(value = "/public/password_reset/reset", method = RequestMethod.POST)
     public String resetPassword(@Valid @ModelAttribute("form") ResetPasswordForm form, BindingResult result, ModelMap model) {
         boolean successfulReset = userService.tryResetPassword(form.getEmail());
         if (successfulReset) {
-            return "redirect:/password_reset/sent";
+            return "redirect:/public/password_reset/sent";
         } else {
-            return "redirect:/password_reset/reset?emailNotFound=true";
+            return "redirect:/public/password_reset/reset?emailNotFound=true";
         }
     }
 
-    @RequestMapping(value = "/password_reset/sent", method = RequestMethod.GET)
+    @RequestMapping(value = "/public/password_reset/sent", method = RequestMethod.GET)
     public String passwordSent() {
         return "/public/passwordReset/passwordSent";
     }

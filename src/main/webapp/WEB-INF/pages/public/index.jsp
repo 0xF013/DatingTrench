@@ -13,7 +13,7 @@
         feed here
     </div>
     <div class="col-md-5">
-        <form:form role="form" class="" method="post" action="/registration/plain"
+        <form:form role="form" class="" method="post" action="/public/registration/plain"
                    modelAttribute="registrationForm">
             <div class="form-group">
                 <form:label path="gender">

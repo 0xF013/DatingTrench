@@ -9,10 +9,15 @@
 
     <context:component-scan base-package="com.datingtrench.mvc"/>
     <mvc:annotation-driven/>
+    <mvc:interceptors>
+        <bean class="com.datingtrench.mvc.interceptors.AuthInterceptor">
+            <property name="authenticatedRoleName" value="ROLE_USER"/>
+        </bean>
+    </mvc:interceptors>
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
 
-    <mvc:resources mapping="/assets/**" location="/assets/*" cache-period="31556926"/>
+    <mvc:resources mapping="/public/assets/**" location="/assets/*" cache-period="31556926"/>
 
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

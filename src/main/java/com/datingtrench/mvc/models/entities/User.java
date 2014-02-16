@@ -1,7 +1,6 @@
 package com.datingtrench.mvc.models.entities;
 
 import com.datingtrench.mvc.base.AbstractEntity;
-import com.datingtrench.mvc.models.entities.auth.AuthenticationAccount;
 import com.datingtrench.mvc.models.enums.Gender;
 import com.datingtrench.mvc.models.validators.constraints.MinimalAge;
 import com.datingtrench.mvc.models.validators.constraints.Unique;

@@ -9,8 +9,8 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/">DatingTrench</a>
-            <a class="" href="/activation/resend"><spring:message code="index.resendActivationCode"/></a>
-            <a class="" href="/password_reset/reset"><spring:message code="index.resetPassword"/></a>
+            <a class="" href="/public/activation/resend"><spring:message code="index.resendActivationCode"/></a>
+            <a class="" href="/public/password_reset/reset"><spring:message code="index.resetPassword"/></a>
         </div>
         <div class="navbar-collapse collapse">
 

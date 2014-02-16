@@ -1,7 +1,7 @@
 package com.datingtrench.mvc.models.builders;
 
+import com.datingtrench.mvc.models.entities.AuthenticationAccount;
 import com.datingtrench.mvc.models.entities.User;
-import com.datingtrench.mvc.models.entities.auth.AuthenticationAccount;
 import com.datingtrench.mvc.models.views.forms.FrontpageRegistrationForm;
 import com.datingtrench.mvc.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;

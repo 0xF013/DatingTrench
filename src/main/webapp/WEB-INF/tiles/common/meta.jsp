@@ -9,6 +9,6 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="<c:url value="/assets/css/style.css" />">
+<link rel="stylesheet" href="<c:url value="/public/assets/css/style.css" />">
 
 <title></title>

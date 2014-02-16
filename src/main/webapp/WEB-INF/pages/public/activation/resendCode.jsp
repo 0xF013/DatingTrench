@@ -10,7 +10,7 @@
         </p>
     </div>
 </c:if>
-<form:form method="post" action="/activation/resend" commandName="form">
+<form:form method="post" action="/public/activation/resend" commandName="form">
 
     <div class="form-group">
         <form:label path="email"><spring:message code="activation.resendCode.form.email"/></form:label>

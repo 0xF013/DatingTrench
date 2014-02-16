@@ -28,7 +28,7 @@ public class ActivationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @RequestMapping(value = "/activation/execute", method = RequestMethod.GET)
+    @RequestMapping(value = "/public/activation/execute", method = RequestMethod.GET)
     public String activate(ModelMap model, @RequestParam(value = "activationCode", required = true) String activationCode) {
         User user = userService.tryActivate(activationCode);
         if (null == user) {
@@ -38,8 +38,7 @@ public class ActivationController {
         return "redirect:/";
     }
 
-
-    @RequestMapping(value = "/activation/resend")
+    @RequestMapping(value = "/public/activation/resend")
     public String resendActivation(ModelMap model, @RequestParam(value = "emailNotFound", required = false) Boolean emailNotFound) {
         if (null == emailNotFound) {
             emailNotFound = false;
@@ -49,17 +48,17 @@ public class ActivationController {
         return "/public/activation/resendCode";
     }
 
-    @RequestMapping(value = "/activation/resend", method = RequestMethod.POST)
+    @RequestMapping(value = "/public/activation/resend", method = RequestMethod.POST)
     public String resendActivation(@Valid @ModelAttribute("form") ResendActivationCodeForm form, BindingResult result, ModelMap model) {
         boolean successfulResend = userService.tryResendActivationCode(form.getEmail());
         if (successfulResend) {
-            return "redirect:/activation/sent";
+            return "redirect:/public/activation/sent";
         } else {
-            return "redirect:/activation/resend?emailNotFound=true";
+            return "redirect:/public/activation/resend?emailNotFound=true";
         }
     }
 
-    @RequestMapping(value = "/activation/sent", method = RequestMethod.GET)
+    @RequestMapping(value = "/public/activation/sent", method = RequestMethod.GET)
     public String activationSent() {
         return "/public/activation/activationSent";
     }

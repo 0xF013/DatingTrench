@@ -61,7 +61,7 @@ public class IndexController {
         return "/public/index";
     }
 
-    @RequestMapping(value = "/registration/plain", method = RequestMethod.POST)
+    @RequestMapping(value = "/public/registration/plain", method = RequestMethod.POST)
     public String plainRegistration(
             @Valid
             @ModelAttribute("registrationForm")
@@ -78,7 +78,7 @@ public class IndexController {
             return "/public/index";
         } else {
             model.asMap().clear();
-            return "redirect:/";
+            return "redirect:/public/activation/sent";
         }
     }
 

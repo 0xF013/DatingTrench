@@ -1,8 +1,7 @@
 package com.datingtrench.mvc.services;
 
+import com.datingtrench.mvc.models.entities.AuthenticationAccount;
 import com.datingtrench.mvc.models.entities.User;
-import com.datingtrench.mvc.models.entities.auth.AuthenticationAccount;
-import com.datingtrench.mvc.models.entities.auth.Role;
 import com.datingtrench.mvc.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,18 +15,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Created by elvis on 2/16/14.
+ */
+
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
         UserDetails userDetails = null;
-        User userEntity = userRepository.findOneByName(username.toLowerCase());
+        User userEntity = userRepository.findActiveUserByEmail(username.toLowerCase());
         if (userEntity == null)
             throw new UsernameNotFoundException("user not found");
 
@@ -43,15 +46,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         boolean accountNonExpired = authenticationAccount.getIsActive();
         boolean credentialsNonExpired = authenticationAccount.getIsActive();
         boolean accountNonLocked = authenticationAccount.getIsActive();
-        Long id = userEntity.getId();
 
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (Role role : authenticationAccount.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         return new org.springframework.security.core.userdetails.User(username, password, enabled,
                 accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
-
 }
