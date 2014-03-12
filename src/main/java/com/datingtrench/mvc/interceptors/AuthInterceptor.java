@@ -25,10 +25,12 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             if (request.isUserInRole(authenticatedRoleName)) {
                 if (requestIsPublic) {
                     response.sendRedirect("/users");
+                    return false;
                 }
             } else {
                 if (!requestIsPublic) {
                     response.sendRedirect("/");
+                    return false;
                 }
             }
         } catch (IOException e) {

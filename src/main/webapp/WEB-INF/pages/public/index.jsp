@@ -19,7 +19,12 @@
                 <form:label path="gender">
                     <spring:message code="registrationForm.labels.gender"/>:
                 </form:label>
-                <form:radiobuttons path="gender"/>
+                <label><spring:message code="enums.gender.male" />
+                    <form:radiobutton path="gender" value="MALE" />
+                </label>
+                <label><spring:message code="enums.gender.female" />
+                    <form:radiobutton path="gender" value="FEMALE" />
+                </label>
                 <form:errors path="gender"/>
             </div>
             <div class="form-group">

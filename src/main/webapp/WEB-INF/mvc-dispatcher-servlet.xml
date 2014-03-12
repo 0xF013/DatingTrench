@@ -17,6 +17,7 @@
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
 
+
     <mvc:resources mapping="/public/assets/**" location="/assets/*" cache-period="31556926"/>
 
 
