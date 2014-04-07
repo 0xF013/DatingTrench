@@ -14,17 +14,7 @@
         </div>
         <div class="navbar-collapse collapse">
 
-            <form class="navbar-form navbar-right" role="form" name='f' action='/j_spring_security_check' method='POST'>
-                <div class="form-group">
-                    <input type="text" placeholder="Email" class="form-control" name='j_username' value=''>
-                </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Password" class="form-control" name='j_password'>
-                </div>
-                <button type="submit" class="btn btn-success">
-                    <spring:message code="index.signIn"/>
-                </button>
-            </form>
+            <a href="/logout"><spring:message code="inside.logout" /> </a>
         </div>
         <!--/.navbar-collapse -->
     </div>

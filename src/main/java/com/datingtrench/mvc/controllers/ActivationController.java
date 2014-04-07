@@ -3,8 +3,10 @@ package com.datingtrench.mvc.controllers;
 import com.datingtrench.mvc.models.entities.User;
 import com.datingtrench.mvc.models.views.forms.ResendActivationCodeForm;
 import com.datingtrench.mvc.services.AuthenticationService;
+import com.datingtrench.mvc.components.SessionStorage;
 import com.datingtrench.mvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -27,6 +29,15 @@ public class ActivationController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private SessionStorage sessionStorage;
+
+    @Value("${env}")
+    private String env;
+
+    @Value("${http.root}")
+    private String httpHost;
 
     @RequestMapping(value = "/public/activation/execute", method = RequestMethod.GET)
     public String activate(ModelMap model, @RequestParam(value = "activationCode", required = true) String activationCode) {
@@ -59,7 +70,10 @@ public class ActivationController {
     }
 
     @RequestMapping(value = "/public/activation/sent", method = RequestMethod.GET)
-    public String activationSent() {
+    public String activationSent(ModelMap model) {
+        model.put("env", env);
+        model.put("showActivationLink", !"production".equals(env));
+        model.put("activationLink", httpHost + "public/activation/execute?activationCode=" + sessionStorage.getActivationCode());
         return "/public/activation/activationSent";
     }
 }

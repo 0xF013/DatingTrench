@@ -6,4 +6,8 @@
     <p class="bg-success">
         <spring:message code="activation.activationSent.message"/>
     </p>
+
+    <c:if test="${showActivationLink}">
+        <a href="<c:out value="${activationLink}"/>">Activate</a>
+    </c:if>
 </div>

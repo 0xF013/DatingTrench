@@ -1,6 +1,7 @@
 package com.datingtrench.mvc.services;
 
 import com.datingtrench.mvc.base.AbstractService;
+import com.datingtrench.mvc.components.SessionStorage;
 import com.datingtrench.mvc.exceptions.ValidationException;
 import com.datingtrench.mvc.models.builders.UserBuilder;
 import com.datingtrench.mvc.models.entities.AuthenticationAccount;
@@ -34,6 +35,9 @@ public class UserService extends AbstractService {
     @Autowired
     private RandomStringGenerator randomStringGenerator;
 
+    @Autowired
+    private SessionStorage sessionStorage;
+
     public User beginRegistration(FrontpageRegistrationForm form) throws ValidationException {
         User user = builder.buildFrom(form);
         validate(user);
@@ -41,6 +45,7 @@ public class UserService extends AbstractService {
         // so idk if it's worth bothering
         userRepository.saveAndFlush(user);
         mailService.userRegistration(user);
+        sessionStorage.setActivationCode(user.getAuthenticationAccount().getActivationCode());
         return user;
     }
 
@@ -65,6 +70,7 @@ public class UserService extends AbstractService {
             return false;
         } else {
             mailService.resendActivationCode(user);
+            sessionStorage.setActivationCode(user.getAuthenticationAccount().getActivationCode());
             return true;
         }
     }

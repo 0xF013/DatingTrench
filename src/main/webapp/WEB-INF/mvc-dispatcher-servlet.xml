@@ -64,20 +64,6 @@
         </property>
     </bean>
 
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.gmail.com"/>
-        <property name="port" value="587"/>
-        <property name="username" value="datingtrench@gmail.com"/>
-        <property name="password" value="mortal_kombat"/>
-        <property name="javaMailProperties">
-            <props>
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.starttls.enable">true</prop>
-                <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
-            </props>
-        </property>
-
-    </bean>
 
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
         <property name="defaultLocale" value="en_US"/>
@@ -85,5 +71,7 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <context:property-placeholder location="WEB-INF/config/${env:development}.properties" />
+    <import resource="classpath*:mvc-dispatcher-servlet-${env:development}.xml" />
 
 </beans>
