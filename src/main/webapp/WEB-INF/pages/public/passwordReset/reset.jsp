@@ -12,7 +12,7 @@
 </c:if>
 <form:form method="post" action="/public/password_reset/reset" commandName="form">
 
-<div class="form-group">
+    <div class="form-group">
         <form:label path="email"><spring:message code="activation.resetPassword.form.email"/></form:label>
         <form:input path="email" class="form-control"/>
     </div>

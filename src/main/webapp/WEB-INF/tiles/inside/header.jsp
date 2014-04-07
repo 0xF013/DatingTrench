@@ -14,7 +14,7 @@
         </div>
         <div class="navbar-collapse collapse">
 
-            <a href="/logout"><spring:message code="inside.logout" /> </a>
+            <a href="/logout"><spring:message code="inside.logout"/> </a>
         </div>
         <!--/.navbar-collapse -->
     </div>

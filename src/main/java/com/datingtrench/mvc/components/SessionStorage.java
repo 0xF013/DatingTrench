@@ -3,7 +3,6 @@ package com.datingtrench.mvc.components;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * Created by elvis on 07.04.14.

@@ -10,7 +10,7 @@
 </c:if>
 <div class="row">
     <div class="col-md-7">
-feed here
+        feed here
     </div>
     <div class="col-md-5">
         <form:form role="form" class="" method="post" action="/public/registration/plain"
@@ -19,11 +19,11 @@ feed here
                 <form:label path="gender">
                     <spring:message code="registrationForm.labels.gender"/>:
                 </form:label>
-                <label><spring:message code="enums.gender.male" />
-                    <form:radiobutton path="gender" value="MALE" />
+                <label><spring:message code="enums.gender.male"/>
+                    <form:radiobutton path="gender" value="MALE"/>
                 </label>
-                <label><spring:message code="enums.gender.female" />
-                    <form:radiobutton path="gender" value="FEMALE" />
+                <label><spring:message code="enums.gender.female"/>
+                    <form:radiobutton path="gender" value="FEMALE"/>
                 </label>
                 <form:errors path="gender"/>
             </div>

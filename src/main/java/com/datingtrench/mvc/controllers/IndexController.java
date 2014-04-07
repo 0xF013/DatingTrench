@@ -7,7 +7,6 @@ import com.datingtrench.mvc.services.UserService;
 import com.datingtrench.mvc.utils.ErrorsMediator;
 import com.datingtrench.mvc.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -39,7 +38,6 @@ public class IndexController {
 
     @Autowired
     private ErrorsMediator errorsMediator;
-
 
 
     @ModelAttribute("years")

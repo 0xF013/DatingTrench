@@ -1,9 +1,9 @@
 package com.datingtrench.mvc.controllers;
 
+import com.datingtrench.mvc.components.SessionStorage;
 import com.datingtrench.mvc.models.entities.User;
 import com.datingtrench.mvc.models.views.forms.ResendActivationCodeForm;
 import com.datingtrench.mvc.services.AuthenticationService;
-import com.datingtrench.mvc.components.SessionStorage;
 import com.datingtrench.mvc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
