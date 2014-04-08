@@ -10,6 +10,7 @@ import java.io.InputStream;
 
 /**
  * Created by elvis on 07.04.14.
+ * Literally does nothing.
  */
 public class NullMailSender implements JavaMailSender {
     @Override
