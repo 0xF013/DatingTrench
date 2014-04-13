@@ -10,7 +10,9 @@
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.connection.username" value="elvis"/>
             <property name="hibernate.connection.password" value="123321"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.import_files" value="import.sql" />
 
             <property name="show_sql" value="true"/>
         </properties>

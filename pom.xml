@@ -80,13 +80,6 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>3.6.10.Final</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.2.9</version>
-        </dependency>
-
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -160,26 +153,108 @@
             <artifactId>tiles-extras</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>2.0.5</version>
+        </dependency>
 
     </dependencies>
 
     <build>
         <finalName>datingtrench</finalName>
+        <filters>
+            <filter>src/main/webapp/WEB-INF/config/${env}.properties</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <!-- Set timestamp in a variable so it can be used for generated files by liquibase in different goals -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <timestampFormat>yyyyMMdd_HHmmss</timestampFormat>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create-timestamp</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <version>2.2</version>
                 <configuration>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                    </includes>
+                    <components>
+                        <component>
+                            <name>hbm2ddl</name>
+                            <implementation>annotationconfiguration</implementation>
+                            <!--<implementation>jpaconfiguration</implementation>-->
+                            <!-- Use 'jpaconfiguration' if you're using JPA. -->
+                            <!--<implementation>jpaconfiguration</implementation>-->
+                        </component>
+                    </components>
+                    <componentProperties>
+                        <drop>true</drop>
+                        <jdk5>true</jdk5>
+                    </componentProperties>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>9.1-901.jdbc4</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.0.5</version>
+                <configuration>
+                    <propertyFile>target/classes/liquibase.properties</propertyFile>
+                    <changeLogFile>target/classes/db/db.changelog.xml</changeLogFile>
+                    <diffChangeLogFile>src/main/resources/db/db-${timestamp}.changelog.xml</diffChangeLogFile>
+                    <logging>info</logging>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-db-prev</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                        <configuration>
+                            <dropFirst>true</dropFirst>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-db-diff</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>diff</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
             </plugin>
         </plugins>
     </build>
