@@ -52,11 +52,9 @@
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="defaultPersistenceUnit"/>
-        <property name="dataSource" ref="dataSource" />
         <property name="jpaPropertyMap">
             <map>
                 <entry key="javax.persistence.validation.factory" value-ref="validator"/>
-                <entry key="hibernate.hbm2ddl.auto" value="create-drop"/>
             </map>
         </property>
     </bean>

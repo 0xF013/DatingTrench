@@ -6,13 +6,11 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost/postgres"/>
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.connection.username" value="elvis"/>
-            <property name="hibernate.connection.password" value="123321"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.connection.url" value="${jdbc.url}"/>
+            <property name="hibernate.connection.driver_class" value="${jdbc.driverClassName}"/>
+            <property name="hibernate.connection.username" value="${jdbc.username}"/>
+            <property name="hibernate.connection.password" value="${jdbc.password}"/>
             <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.hbm2ddl.import_files" value="import.sql" />
 
             <property name="show_sql" value="true"/>
         </properties>

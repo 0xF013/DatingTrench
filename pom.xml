@@ -160,7 +160,29 @@
         </dependency>
 
     </dependencies>
-
+    <profiles>
+        <profile>
+            <id>development</id>
+            <properties>
+                <env>development</env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <env>production</env>
+            </properties>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>production</value>
+                </property>
+            </activation>
+        </profile>
+    </profiles>
     <build>
         <finalName>datingtrench</finalName>
         <filters>
@@ -168,11 +190,12 @@
         </filters>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/main/resources/</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
         <plugins>
+
             <plugin>
                 <!-- Set timestamp in a variable so it can be used for generated files by liquibase in different goals -->
                 <groupId>org.codehaus.mojo</groupId>
@@ -194,12 +217,12 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>hibernate3-maven-plugin</artifactId>
                 <version>2.2</version>
+
                 <configuration>
                     <components>
                         <component>
                             <name>hbm2ddl</name>
-                            <implementation>annotationconfiguration</implementation>
-                            <!--<implementation>jpaconfiguration</implementation>-->
+                            <implementation>jpaconfiguration</implementation>
                             <!-- Use 'jpaconfiguration' if you're using JPA. -->
                             <!--<implementation>jpaconfiguration</implementation>-->
                         </component>
@@ -217,6 +240,7 @@
                         </goals>
                     </execution>
                 </executions>
+
                 <dependencies>
                     <dependency>
                         <groupId>postgresql</groupId>
@@ -228,14 +252,33 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>3.0.5</version>
+                <version>3.0.8</version>
                 <configuration>
                     <propertyFile>target/classes/liquibase.properties</propertyFile>
                     <changeLogFile>target/classes/db/db.changelog.xml</changeLogFile>
-                    <diffChangeLogFile>src/main/resources/db/db-${timestamp}.changelog.xml</diffChangeLogFile>
+                    <diffChangeLogFile>src/main/resources/db/migrations/db-${timestamp}.changelog.xml</diffChangeLogFile>
                     <logging>info</logging>
                 </configuration>
                 <executions>
+                    <execution>
+                        <id>drop-db</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>dropAll</goal>
+                        </goals>
+                        <configuration>
+                            <propertyFile>target/classes/liquibase.properties</propertyFile>
+                        </configuration>
+                    </execution>
+                    <!-- mark db up-to-date in the  DATABASECHANGELOG table after generating
+                        schema with hbm2ddl so that no migration is executed -->
+                    <execution>
+                        <id>mark-db-up-to-date</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>changelogSync</goal>
+                        </goals>
+                    </execution>
                     <execution>
                         <id>generate-db-prev</id>
                         <phase>process-resources</phase>
@@ -244,6 +287,7 @@
                         </goals>
                         <configuration>
                             <dropFirst>true</dropFirst>
+                            <propertyFile>target/classes/liquibase-diff.properties</propertyFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -252,10 +296,44 @@
                         <goals>
                             <goal>diff</goal>
                         </goals>
+                        <configuration>
+                            <propertyFile>target/classes/liquibase-diff.properties</propertyFile>
+                        </configuration>
                     </execution>
                 </executions>
-
+                <dependencies>
+                    <dependency>
+                        <groupId>postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>9.1-901.jdbc4</version>
+                    </dependency>
+                </dependencies>
             </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.liquibase</groupId>-->
+                <!--<artifactId>liquibase-maven-plugin</artifactId>-->
+                <!--<version>3.0.5</version>-->
+                <!--<configuration>-->
+                    <!--<propertyFile>target/classes/liquibase.properties</propertyFile>-->
+                    <!--<changeLogFile>target/classes/db/db.changelog.xml</changeLogFile>-->
+                    <!--<logging>info</logging>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                       <!--<id>generate-initial-migration</id>-->
+                        <!--<phase>process-resources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>dropAll</goal>-->
+                            <!--<goal>generateChangeLog</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<outputChangeLogFile>src/main/resources/db/db.changelog-${timestamp}.xml</outputChangeLogFile>-->
+                        <!--</configuration>-->
+
+                    <!--</execution>-->
+                <!--</executions>-->
+
+            <!--</plugin>-->
         </plugins>
     </build>
 </project>
