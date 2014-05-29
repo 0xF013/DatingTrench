@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet author="elvis (generated)" id="1397557658840-1">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-2">
+        <createTable tableName="authenticationaccount">
+            <column name="id" type="INT8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activationcode" type="VARCHAR(255)"/>
+            <column name="isactive" type="BOOL"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="user_id" type="INT8"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-3">
+        <createTable tableName="location">
+            <column name="id" type="INT8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(255)"/>
+            <column name="countrycode" type="VARCHAR(2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="FLOAT8"/>
+            <column name="longitude" type="FLOAT8"/>
+            <column name="region" type="VARCHAR(255)"/>
+            <column name="zipcode" type="VARCHAR(7)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-4">
+        <createTable tableName="post">
+            <column name="id" type="INT8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-5">
+        <createTable tableName="users">
+            <column name="id" type="INT8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dob" type="date"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="gender" type="INT4"/>
+            <column name="lastactiondate" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="registrationdate" type="TIMESTAMP WITH TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-6">
+        <addPrimaryKey columnNames="id" constraintName="authenticationaccount_pkey" tableName="authenticationaccount"/>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-7">
+        <addPrimaryKey columnNames="id" constraintName="location_pkey" tableName="location"/>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-8">
+        <addPrimaryKey columnNames="id" constraintName="post_pkey" tableName="post"/>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-9">
+        <addPrimaryKey columnNames="id" constraintName="users_pkey" tableName="users"/>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-10">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="authenticationaccount" constraintName="fk119058757dacad81" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="elvis (generated)" id="1397557658840-11">
+        <addUniqueConstraint columnNames="email" constraintName="users_email_key" deferrable="false" disabled="false" initiallyDeferred="false" tableName="users"/>
+    </changeSet>
+</databaseChangeLog>

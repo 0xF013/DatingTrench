@@ -8,4 +8,8 @@
 
     </bean>
 
+    <!--<bean id="seedingService" class="com.datingtrench.mvc.services.SeedingService" init-method="init" scope="singleton">-->
+
+    <!--</bean>-->
+
 </beans>
